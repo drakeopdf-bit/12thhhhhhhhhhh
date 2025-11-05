@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Our Love Journey — For Chikku 💖</title>
+  <meta name="description" content="A cinematic, animated love journey with photos, videos, music, candle-glow lights, and a secret message for Chikku." />
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* =========================
+       THEME & TOKENS
+       ========================= */
+    :root{
+      --bg: #0b0b1d;           /* deep night */
+      --bg-soft: #12122b;       /* panels */
+      --text: #f6f3ff;          /* soft white */
+      --muted: #c7bfe6;         /* lavender */
+      --glow1: #9e66ff;         /* neon purple */
+      --glow2: #ff66c4;         /* neon pink */
+      --glow3: #5ce1e6;         /* neon teal */
+      --accent: #ffcf6b;        /* warm candle */
+      --accent-soft: rgba(255, 207, 107, .25);
+      --radius: 22px;
+      --shadow: 0 20px 60px rgba(0,0,0,.55);
+    }
+
+    /* ✨ Candlelight Mode — keep background dark, warm text + halo */
+    [data-theme="light"]{
+      --bg:#0b0b1d;           /* KEEP night background */
+      --bg-soft:#12122b;
+      --text:#fff4d2;         /* candle-tinted text */
+      --muted:#d5c8a3;
+      --glow1:#ffcf6b;        /* golden hues */
+      --glow2:#ffc25b;
+      --glow3:#ffb347;
+      --accent:#ffd56d;
+      --accent-soft: rgba(255, 213, 109, .35);
+    }
+
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+    img,video{max-width:100%;display:block}
+    a{color:inherit}
+
+    /* 🕯️ soft candle overlay when lights are on (does NOT brighten screen) */
+    body.lights-on::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      background:
+        radial-gradient(900px 600px at 50% 60%,
+          rgba(255,220,130,.16) 0%,
+          rgba(255,190,80,.08) 40%,
+          transparent 80%);
+      mix-blend-mode:screen;
+      z-index:-1;
+      animation:candleFlicker 4s ease-in-out infinite;
+    }
+    @keyframes candleFlicker{0%,100%{opacity:.9;}50%{opacity:.7;}}
+
+    /* =========================
+       STARRY BACKDROP
+       ========================= */
+    .sky{position:fixed;inset:0;z-index:-3;background:radial-gradient(1200px 600px at 50% -20%, rgba(255,102,196,.12), transparent 60%), radial-gradient(1000px 500px at -10% 110%, rgba(94, 225, 230, .1), transparent 60%), radial-gradient(900px 500px at 110% 110%, rgba(158,102,255,.1), transparent 60%), var(--bg)}
+    canvas#stars{position:fixed;inset:0;z-index:-2;opacity:.9}
+    .aurora{position:fixed;inset:-20% -10%;filter:blur(40px);background:conic-gradient(from 180deg at 50% 50%, rgba(255,102,196,.12), rgba(94,225,230,.1), rgba(158,102,255,.14), rgba(255,102,196,.12));mix-blend-mode:screen;z-index:-1}
+
+    /* =========================
+       ENTRANCE OVERLAY — LIGHTS ON/OFF
+       ========================= */
+    .intro{position:fixed;inset:0;background:linear-gradient(180deg,#020212, #0b0b1d 60%);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:18px;text-align:center;padding:30px;z-index:50}
+    .intro h1{font-family:'Great Vibes', cursive;font-size: clamp(48px, 8vw, 90px);margin:0;letter-spacing:.5px;color:#ffd7f2;text-shadow:0 10px 40px rgba(255,102,196,.35)}
+    .intro p{max-width:680px;opacity:.9}
+    .intro .controls{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+    .btn{border:none;border-radius:999px;padding:14px 20px;font-weight:700;cursor:pointer;box-shadow:0 10px 30px rgba(0,0,0,.35), 0 0 0 1px rgba(255,255,255,.08) inset;backdrop-filter: blur(6px);transition:.2s transform ease,.2s opacity ease}
+    .btn:hover{transform:translateY(-2px)}
+    .btn-primary{background:linear-gradient(135deg,var(--glow2),var(--glow1));color:white}
+    .btn-ghost{background:rgba(255,255,255,.08);color:var(--text)}
+
+    .fade-out{animation:fadeOut .8s ease forwards}
+    @keyframes fadeOut{to{opacity:0;visibility:hidden}}
+
+    /* =========================
+       HEADER
+       ========================= */
+    header{position:relative; text-align:center; padding: 80px 20px 20px}
+    .tag{display:inline-block;background:linear-gradient(135deg,var(--glow1),var(--glow2));color:#fff;padding:8px 14px;border-radius:999px;font-size:12px;letter-spacing:.4px;box-shadow:0 8px 20px rgba(255,102,196,.25)}
+    h2.title{font-family:'Great Vibes', cursive;font-size: clamp(40px, 7vw, 86px);margin:14px 0 10px;color:#ffd7f2;text-shadow:0 4px 0 rgba(255,102,196,.15)}
+    .subtitle{max-width:800px;margin:0 auto 18px;opacity:.95}
+
+    .top-controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:18px auto 0}
+    .chip{display:inline-flex;align-items:center;gap:10px;background:rgba(255,255,255,.06);padding:10px 14px;border-radius:999px;box-shadow:var(--shadow)}
+
+    .switch{position:relative;width:52px;height:28px;background:rgba(255,255,255,.15);border-radius:999px;cursor:pointer;flex-shrink:0}
+    .knob{position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:.2s left ease}
+    .switch.on .knob{left:27px}
+
+    /* =========================
+       SECTION CARDS & REVEALS
+       ========================= */
+    main{max-width:1200px;margin:0 auto;padding: 10px 18px 120px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border-radius:var(--radius); box-shadow:var(--shadow); padding:22px; margin:22px 0; border:1px solid rgba(255,255,255,.08)}
+    .card h3{font-size:26px;margin:6px 0 6px;color:#ffd7f2}
+    .reveal{opacity:0; transform: translateY(22px) scale(.98); filter: blur(2px)}
+    .reveal.show{opacity:1; transform:none; filter:none; transition: .8s cubic-bezier(.2,.7,.2,1)}
+
+    /* =========================
+       CINEMATIC HERO
+       ========================= */
+    .hero{position:relative;overflow:hidden;border-radius:24px}
+    .hero .parallax{position:absolute;inset:0;background:radial-gradient(800px 400px at 70% -10%, rgba(255,102,196,.15), transparent 60%)}
+    .hero .content{position:relative;padding:60px 20px;display:grid;place-items:center;gap:10px}
+    .hero h1{font-family:'Great Vibes', cursive;font-size: clamp(44px, 8vw, 96px);margin:0;color:#ffd7f2}
+    .hero p{max-width:800px;text-align:center}
+
+    /* =========================
+       SWIPE GALLERY (8 PHOTOS)
+       ========================= */
+    .gallery{position:relative;overflow:hidden;border-radius:18px}
+    .track{display:flex;gap:12px;overflow:auto;scroll-snap-type:x mandatory;padding:10px;scroll-behavior:smooth}
+    .slide{flex: 0 0 82%; max-width:82%; scroll-snap-align:center; position:relative; border-radius:16px; overflow:hidden; background:#1a1a33}
+    @media(min-width:900px){.slide{flex:0 0 48%; max-width:48%}}
+    .slide img{width:100%;height:420px;object-fit:cover}
+    .cap{position:absolute;left:0;right:0;bottom:0;padding:10px 12px;background:linear-gradient(180deg, transparent, rgba(0,0,0,.65));color:#fff;font-size:14px}
+    .nav{position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;pointer-events:none}
+    .nav button{pointer-events:auto;border:none;border-radius:999px;width:44px;height:44px;display:grid;place-items:center;background:rgba(0,0,0,.35);color:#fff;cursor:pointer}
+
+    /* =========================
+       VIDEO DUO (2 VIDEOS) – bg music continues
+       ========================= */
+    .videos{display:grid;grid-template-columns:1fr;gap:16px}
+    @media(min-width:960px){.videos{grid-template-columns:1fr 1fr}}
+    .vwrap{position:relative;border-radius:18px;overflow:hidden;background:#1a1a33}
+    .vwrap video{width:100%;height:100%;display:block}
+
+    /* =========================
+       FLOATING HEARTS
+       ========================= */
+    .hearts{pointer-events:none;position:fixed;inset:0;overflow:hidden;z-index:1}
+    .heart{position:absolute;bottom:-10vh;opacity:.9;animation:floatUp linear infinite}
+    @keyframes floatUp{from{transform:translateY(0) scale(.8)} to{transform:translateY(-120vh) scale(1.1); opacity:.25}}
+
+    footer{ text-align:center; padding:40px 20px; color:var(--muted); font-size:14px }
+
+    /* =========================
+       SECRET REVEAL SCENE (INPUT)
+       ========================= */
+    .secret{position:relative;overflow:hidden;border-radius:24px;padding:26px;background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.08)}
+    .secret h3{margin-top:0}
+    .prompt{opacity:.9;margin-bottom:10px}
+    .input-row{display:flex;gap:8px;flex-wrap:wrap}
+    .input-row input{flex:1;min-width:220px;border-radius:999px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:var(--text);padding:12px 14px;outline:none}
+    .input-row button{border:none;border-radius:999px;padding:12px 16px;font-weight:700;cursor:pointer;background:linear-gradient(135deg,var(--glow2),var(--glow1));color:#fff}
+    .hint{margin-top:8px;color:var(--muted);font-size:14px;min-height:22px}
+
+    /* Candle glow ONLY on text when lights on */
+    .text-lit{position:relative; color:var(--text)}
+    .text-lit:before{content:""; position:absolute; inset:-40px -60px; pointer-events:none; background: radial-gradient(220px 140px at 50% 40%, var(--accent-soft), transparent 60%); filter: blur(6px); mix-blend-mode:screen; opacity:0; transition:.4s ease}
+    .lights-on .text-lit:before{opacity:1}
+    .text-lit.glow{ text-shadow: 0 0 12px rgba(255, 207, 107, .4), 0 0 24px rgba(255, 207, 107, .25) }
+
+    /* Reveal Lines */
+    .reveal-lines{margin-top:14px; line-height:1.7}
+    .reveal-line{opacity:0; transform:translateY(8px); filter:blur(2px)}
+    .reveal-line.show{opacity:1; transform:none; filter:none; transition: 1.6s ease}
+
+    .continue-btn{display:none;margin-top:16px}
+    .continue-btn.show{display:inline-block}
+  </style>
+</head>
+<body>
+  <!-- Night Sky Layers -->
+  <div class="sky"></div>
+  <canvas id="stars"></canvas>
+  <div class="aurora"></div>
+  <div class="hearts" aria-hidden="true"></div>
+
+  <!-- INTRO OVERLAY -->
+  <div class="intro" id="intro">
+    <h1 class="text-lit glow">Lights Off… then On ✨</h1>
+    <p class="text-lit">Welcome to our little universe, Chikku. Tap <b>Start Journey</b> to explore — or discover the secret that turns the light on. 💫</p>
+    <div class="controls">
+      <button class="btn btn-primary" id="startBtn">🌙 Start Journey</button>
+      <button class="btn btn-ghost" id="toggleTheme">💡 Lights: Off</button>
+      <button class="btn btn-ghost" id="musicToggle">🔈 Music: Off</button>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <span class="tag">💗 Forever & Always 💗</span>
+    <h2 class="title text-lit glow">For My Wifey Chikku</h2>
+    <p class="subtitle text-lit">Romantic night-sky vibes, cinematic scroll, soft glows and a soundtrack that keeps playing even when videos play — because our love never pauses. 🫶</p>
+
+    <div class="top-controls">
+      <div class="chip">🎶 Music
+        <div class="switch" id="musicSwitch" role="switch" aria-label="Toggle music"><div class="knob"></div></div>
+      </div>
+      <div class="chip">💡 Lights
+        <div class="switch" id="lightSwitch" role="switch" aria-label="Toggle theme"><div class="knob"></div></div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Cinematic Hero -->
+    <section class="card hero reveal lights-target">
+      <div class="parallax" aria-hidden="true"></div>
+      <div class="content">
+        <h1 class="text-lit glow">Our Starry Story</h1>
+        <p class="text-lit">Through thick and thin, in hush and laughter — we kept choosing us. Here’s our tiny galaxy: 8 photos, 2 videos, endless pyaar. 💞</p>
+      </div>
+    </section>
+
+    <!-- SECRET REVEAL SCENE -->
+    <section class="card secret reveal" id="secretScene">
+      <h3 class="text-lit glow">The Light Test 🔐</h3>
+      <p class="prompt text-lit">The light only turns on for the right words… can you say them the way your heart does?</p>
+      <div class="input-row">
+        <input id="secretInput" type="text" placeholder="whisper here…" autocomplete="off" />
+        <button id="secretBtn">Reveal</button>
+      </div>
+      <div class="hint" id="hint"></div>
+      <div class="reveal-lines text-lit" id="revealContainer"></div>
+      <button class="btn btn-primary continue-btn" id="continueBtn">💫 Continue Our Story</button>
+    </section>
+
+    <!-- GIF Row (cute vibes) -->
+    <section class="card reveal lights-target">
+      <h3 class="text-lit glow">Cute Vibes & Happy Dances 💃✨</h3>
+      <div class="gallery">
+        <div class="track" id="gifTrack">
+          <div class="slide"><img src="assets/gifs/cute1.gif" alt="cute gif 1"></div>
+          <div class="slide"><img src="assets/gifs/cute2.gif" alt="cute gif 2"></div>
+          <div class="slide"><img src="assets/gifs/cute3.gif" alt="cute gif 3"></div>
+          <div class="slide"><img src="assets/gifs/cute4.gif" alt="cute gif 4"></div>
+        </div>
+        <div class="nav">
+          <button aria-label="Prev" data-track="#gifTrack">◀</button>
+          <button aria-label="Next" data-track="#gifTrack">▶</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Swipe Gallery (8 photos) -->
+    <section class="card reveal lights-target" id="gallerySection">
+      <h3 class="text-lit glow">Swipe Through Our Memories 📸</h3>
+      <div class="gallery">
+        <div class="track" id="photoTrack">
+          <figure class="slide"><img src="assets/photos/photo1.jpg" alt="Memory 1"><figcaption class="cap">Your smile, my sunrise.</figcaption></figure>
+          <figure class="slide"><img src="assets/photos/photo2.jpg" alt="Memory 2"><figcaption class="cap">Rain, one umbrella, one heartbeat.</figcaption></figure>
+          <figure class="slide"><img src="assets/photos/photo3.jpg" alt="Memory 3"><figcaption class="cap">Festival glow & giggles.</figcaption></figure>
+          <figure class="slide"><img src="assets/photos/photo4.jpg" alt="Memory 4"><figcaption class="cap">That goofy selfie I love.</figcaption></figure>
+          <figure class="slide"><img src="assets/photos/photo5.jpg" alt="Memory 5"><figcaption class="cap">Long talks, longer walks.</figcaption></figure>
+          <figure class="slide"><img src="assets/photos/photo6.jpg" alt="Memory 6"><figcaption class="cap">Your birthday, my holiday.</figcaption></figure>
+          <figure class="slide"><img src="assets/photos/photo7.jpg" alt="Memory 7"><figcaption class="cap">Sunset promises.</figcaption></figure>
+          <figure class="slide"><img src="assets/photos/photo8.jpg" alt="Memory 8"><figcaption class="cap">Us. Always us.</figcaption></figure>
+        </div>
+        <div class="nav">
+          <button aria-label="Prev" data-track="#photoTrack">◀</button>
+          <button aria-label="Next" data-track="#photoTrack">▶</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Videos (BG music continues) -->
+    <section class="card reveal lights-target">
+      <h3 class="text-lit glow">Tiny Films of Us 🎬</h3>
+      <div class="videos">
+        <div class="vwrap">
+          <video controls preload="metadata" playsinline muted poster="assets/videos/video1-poster.jpg">
+            <source src="assets/videos/video1.mp4" type="video/mp4" />
+          </video>
+        </div>
+        <div class="vwrap">
+          <video controls preload="metadata" playsinline muted poster="assets/videos/video2-poster.jpg">
+            <source src="assets/videos/video2.mp4" type="video/mp4" />
+          </video>
+        </div>
+      </div>
+      <p style="opacity:.8;margin-top:8px" class="text-lit">Tip: Videos are muted so our background music keeps the vibe. Unmute a video if you want its sound — the music will keep playing unless you pause it. 💿✨</p>
+    </section>
+
+    <!-- Love Note -->
+    <section class="card reveal lights-target">
+      <h3 class="text-lit glow">Letter to Chikku 💌</h3>
+      <p class="text-lit" style="font-size:18px">You’re my calm and my chaos, my giggle and my glow. Thanks for choosing us on sunny days and stormy ones. I love you in all the loud ways and the quiet ones too. 🌙✨</p>
+    </section>
+  </main>
+
+  <footer>
+    Made with infinite pyaar by <b class="text-lit glow">your forever person</b> 💗
+  </footer>
+
+  <!-- AUDIO -->
+  <audio id="bgm" loop src="assets/music/our-song.mp3"></audio>
+
+  <script>
+    // =========================
+    // STARFIELD CANVAS
+    // =========================
+    const canvas = document.getElementById('stars');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    function resize(){ canvas.width = innerWidth; canvas.height = innerHeight; }
+    addEventListener('resize', resize); resize();
+    for(let i=0;i<180;i++){ stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,z:Math.random()*1.5+0.2,r:Math.random()*1.4+0.4}); }
+    function drawStars(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      for(const s of stars){
+        ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+        ctx.fillStyle = `rgba(255,255,255,${0.6 + Math.sin((performance.now()/600 + s.x)*s.z)*0.3})`;
+        ctx.shadowColor = Math.random()>.5? '#9e66ff':'#ff66c4';
+        ctx.shadowBlur = 4;
+        ctx.fill();
+      }
+      requestAnimationFrame(drawStars);
+    }
+    drawStars();
+
+    // =========================
+    // FLOATING HEARTS
+    // =========================
+    const hearts = document.querySelector('.hearts');
+    for (let i=0; i<26; i++){
+      const h = document.createElement('div');
+      h.className = 'heart';
+      const size = Math.random()*22 + 10;
+      h.style.left = Math.random()*100 + 'vw';
+      h.style.width = size + 'px';
+      h.style.height = size + 'px';
+      h.style.background = `radial-gradient(circle at 30% 30%, #fff 0 24%, transparent 26%), linear-gradient(135deg, var(--glow2), var(--glow1))`;
+      h.style.borderRadius = '50% 50% 0 50% / 50% 50% 0 50%';
+      h.style.transform = 'rotate(45deg)';
+      h.style.animationDuration = (Math.random()*10 + 12) + 's';
+      hearts.appendChild(h);
+    }
+
+    // =========================
+    // ENTRANCE / THEME / MUSIC CONTROLS
+    // =========================
+    const intro = document.getElementById('intro');
+    const startBtn = document.getElementById('startBtn');
+    const toggleThemeBtn = document.getElementById('toggleTheme');
+    const musicToggleBtn = document.getElementById('musicToggle');
+    const audio = document.getElementById('bgm');
+
+    let musicOn = false;
+
+    async function playMusic(){
+      if(musicOn) return;
+      try{ await audio.play(); musicOn = true; musicSwitch.classList.add('on'); updateMusicUI(); }
+      catch(e){ console.log('User gesture needed for audio:', e); }
+    }
+
+    function updateMusicUI(){
+      musicToggleBtn.textContent = musicOn ? '🔊 Music: On' : '🔈 Music: Off';
+    }
+
+    startBtn.addEventListener('click', async ()=>{
+      // just fade intro; music starts on secret phrase to be safe on all browsers
+      intro.classList.add('fade-out');
+      setTimeout(()=> intro.remove(), 820);
+    });
+
+    toggleThemeBtn.addEventListener('click', ()=>{
+      document.documentElement.dataset.theme = document.documentElement.dataset.theme==='light' ? '' : 'light';
+      toggleThemeBtn.textContent = document.documentElement.dataset.theme==='light' ? '🌙 Lights: On' : '💡 Lights: Off';
+      toggleCandleClass();
+    });
+
+    musicToggleBtn.addEventListener('click', async ()=>{
+      if(musicOn){ audio.pause(); musicOn=false; } else { await playMusic(); }
+      updateMusicUI();
+    });
+
+    // Header switches
+    const musicSwitch = document.getElementById('musicSwitch');
+    const lightSwitch = document.getElementById('lightSwitch');
+
+    musicSwitch.addEventListener('click', async ()=>{
+      musicSwitch.classList.toggle('on');
+      if(musicSwitch.classList.contains('on')){ await playMusic(); }
+      else { audio.pause(); musicOn=false; updateMusicUI(); }
+    });
+
+    function toggleCandleClass(){
+      document.body.classList.toggle('lights-on', document.documentElement.dataset.theme==='light');
+    }
+
+    lightSwitch.addEventListener('click', ()=>{
+      lightSwitch.classList.toggle('on');
+      document.documentElement.dataset.theme = lightSwitch.classList.contains('on') ? 'light' : '';
+      toggleCandleClass();
+    });
+
+    // Ensure videos DO NOT stop background music
+    document.querySelectorAll('video').forEach(v=>{
+      v.addEventListener('play', ()=>{ /* music continues */ });
+    });
+
+    // =========================
+    // REVEAL ON SCROLL
+    // =========================
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('show'); });
+    }, {threshold:.15});
+    document.querySelectorAll('.reveal').forEach(el=> observer.observe(el));
+
+    // Simple parallax for hero
+    const heroParallax = document.querySelector('.hero .parallax');
+    addEventListener('scroll', ()=>{
+      const y = scrollY * 0.25; if(heroParallax) heroParallax.style.transform = `translateY(${y}px)`;
+    });
+
+    // =========================
+    // SWIPE HELPERS (prev/next buttons & touch)
+    // =========================
+    function moveTrack(track, dir=1){ track.scrollBy({left: dir * (track.clientWidth * 0.8 + 12), behavior:'smooth'}); }
+    document.querySelectorAll('.nav button').forEach(btn=>{
+      const track = document.querySelector(btn.dataset.track);
+      btn.addEventListener('click', ()=> moveTrack(track, btn.textContent.includes('◀') ? -1 : 1));
+    });
+
+    document.querySelectorAll('.track').forEach(track=>{
+      let startX=0, scrollStart=0, isDown=false;
+      track.addEventListener('pointerdown', e=>{ isDown=true; startX=e.pageX; scrollStart=track.scrollLeft; track.setPointerCapture(e.pointerId); });
+      track.addEventListener('pointermove', e=>{ if(!isDown) return; const dx=e.pageX-startX; track.scrollLeft = scrollStart - dx; });
+      ['pointerup','pointercancel','pointerleave'].forEach(ev=> track.addEventListener(ev, ()=> isDown=false));
+    });
+
+    // =========================
+    // SECRET PHRASE LOGIC — reveals lines slowly
+    // =========================
+    const secretBtn = document.getElementById('secretBtn');
+    const secretInput = document.getElementById('secretInput');
+    const hint = document.getElementById('hint');
+    const revealContainer = document.getElementById('revealContainer');
+    const continueBtn = document.getElementById('continueBtn');
+
+    const hints = [
+      'Hint: say it the way your heart does…',
+      'Closer… include the name you whisper 💕',
+      'Try: i love you … who? 😌',
+      'Lowercase everything, keep it simple.',
+      'Three words + one name. You know it. 💫'
+    ];
+    let hintIndex = 0;
+
+    const SECRET = 'i love you mohit'; // exact phrase (lowercase)
+
+    // Your full message split into lines (template literal preserved correctly)
+    const MESSAGE = `Finally… you said it. You are my light in every dark. Now let’s walk through our stars again 💖
+To my Chiiku, my Moto M70, my Chudel, my Tamatar, my Aunty Ji ❤️
+
+MY chotu sa bby tu jab bolta hai “thappad maarungi, chhati cheer dungi, kutte kamine” us waqt main darta nahi, bas muskura deta hoon… kyunki mujhe pata hai uske peeche ek innocent si pyaar bhari pagal ladki chhupi hai, jo sirf mujhe pyaar karti hai.
+
+Tera gussa bhi pyaara lagta hai, jaise momos or uski chatni.. Dono ka taste waste ek dusre ke bina... [ pr tu toh bina chatni bi kha leti h hattt... koi naa (pgl h vo baat alag h pr mera bby hai jo imp h)]
+Aur jab tu “vhi aakr marugi” kehti hai, main andar se bolta hoon  “aaja aaaa jaaa na meri jaan, maar de mujhe apne pyaar se.” ❤️ hehehe
+
+Tera har mood mujhe yaad rehta hai — jab tu roothi hoti hai, toh lagta hai duniya ne color lose kar diya ho; aur jab tu hasta hai, toh lagta hai raakhshaho ka Yug dobara aagya bhyii me dar jata hu (hehehehehehehe).
+
+Main seriously bolra hoon tujhse — tere baaton se, teri nautanki se, tere pyaar se, aur us tareeke se jisme tu pyaar bhi karti hai aur guccha bi krti h.
+Tere “kyyyyyyyyaaaaaaaaaaaaaaaaaaaaaaaaaaaa haaaaaaaaaaaiiiiiiiii” bolne mein bhi itna pyaar lagta hai na, ki dil chaahe uss word ko frame kar ke diwaar pe chipka du.
+
+Tu mere liye sirf ek ladki nahi, ek habit ban gayi hai.( jhut salle, tu mere liye voo haii .. ummmmwaaah hai tu ummmmmwaaaaaaaahhhh mera samjra?? ummmmhh ummmmmmmmmmwaaaaaaaaahhh)
+Jab bhi tu “kutte aab tu gya” kehti hai ya mujhe daantti hai, mere andar kuch nikal jata hai.... afcoz pashina bhyii dar jata hu me bhot..
+Aur sach bataun — agar kabhi tu mujhe maar bhi degi na, main fir bhi tujhe hug kar lunga, or boluga pyaar se apke kaan me —
+"aaaareeeeeee kab tak jawani chipaogi rani... kuwaro ko kitna sataogi rani , kabhi toh hamari chudelia banogi?? !" 😘
+
+Tu meri sabse special cheez hai — meri morning thought, meri night prayer, aur meri har heartbeat ke beech mein bas tu hi tu hai. heartbeat ki sound lub-dub hoti h pr meri? lub nidhi dumb nidhi.. lub nidhi dub nidhi lub nidhi dub nidhi... hai 
+Chahe duniya kuch bhi keh le, mera dil toh bas yehi kehta hai —
+“Ummwahh forever, meri Chiiku, meri Moto M70, meri Chudel, meri Tamatar, meri Aunty Ji.” ❤️🔥
+
+Ab tu bol — thappad maarne aayegi ya pyaar dene? 😉
+hope so likha hua apko feel hua meri madam bss assi he life hone wali h hamari khati meethi sii — ye sirf letter nahi, ek hug in words hai ❤️
+chahe tu gussa kare ya pighle, dono meri duniya hai 💫
+
+chahe “vhi aakr marugi” ya “ummwahh”
+donon mere liye ek hi matlab rakhte hain —
+lub dub you, kutta-style love. 
+bye its 1.20am gn 
+
+— Tera Mohit, forever addicted to you 💋`;
+
+    function nextHint(){
+      hint.textContent = hints[hintIndex % hints.length];
+      hintIndex++;
+    }
+
+    function clearReveal(){ revealContainer.innerHTML=''; }
+
+    function revealLinesSlow(){
+      clearReveal();
+      const lines = MESSAGE.split('\n'); // ✅ fixed (no duplicates)
+      let i = 0;
+      const interval = setInterval(()=>{
+        if(i >= lines.length){
+          clearInterval(interval);
+          continueBtn.classList.add('show');
+          return;
+        }
+        const p = document.createElement('p');
+        p.className = 'reveal-line text-lit glow';
+        p.textContent = lines[i++];
+        revealContainer.appendChild(p);
+        requestAnimationFrame(()=> p.classList.add('show'));
+      }, 2500); // ~2.5s per line
+    }
+
+    function checkSecret(){
+      const value = (secretInput.value || '').trim();
+      if(value.toLowerCase() === SECRET){
+        // turn on candlelight (text glow + warm halo), keep dark bg
+        document.documentElement.dataset.theme = 'light';
+        document.body.classList.add('lights-on');
+        lightSwitch.classList.add('on');
+        // play music softly
+        playMusic();
+        // reveal message slowly
+        revealLinesSlow();
+        hint.textContent = '';
+      }else{
+        nextHint();
+      }
+    }
+
+    secretBtn.addEventListener('click', checkSecret);
+    secretInput.addEventListener('keydown', (e)=>{ if(e.key==='Enter') checkSecret(); });
+
+    continueBtn.addEventListener('click', ()=>{
+      document.getElementById('gallerySection').scrollIntoView({behavior:'smooth'});
+    });
+  </script>
+</body>
+</html>
